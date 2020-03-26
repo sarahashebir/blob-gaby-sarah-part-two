@@ -2,36 +2,43 @@
 
 filename = 'deployment0001_GP03FLMB.nc';
 %1a. Use the function "ncdisp" to display information about the data contained in this file
-%-->
+ncdisp(filename)
 
-%1b. Use the function "ncreadatt" to extract the latitude and longitude
-%attributes of this dataset
-%-->
-%-->
+%1b. Use the function "ncreadatt" to extract the latitude and longitude attributes of this dataset
+%ncreadatt (filename)
+lat = ncreadatt(filename,'/','lat');
+lon = ncreadatt(filename,'/','lon');
 
 %1c. Use the function "ncread" to extract the variables "time" and
 %"ctdmo_seawater_temperature"
-%-->
-%-->
+time = ncread(filename,'time');
+SST = ncread(filename,'ctdmo_seawater_temperature');
+
+% ncid= netcdf.open(filename, 'NC_NOWRITE');
+% [numdims, numvars, numglobalatts,unlimdimID]= netcdf.inq(ncid);
+% tt= netcdf.getVar(ncid, netcdf.inqVarID(ncid, 'time'));
+% SL= netcdf.getVar(ncid, netcdf.inqVarID(ncid, 'zostoga'));
 
 % Extension option: Also extract the variable "pressure" (which, due to the
 % increasing pressure underwater, tells us about depth - 1 dbar ~ 1 m
 % depth). How deep in the water column was this sensor deployed?
+pressure = ncread(filename,'pressure');
 
 %% 2. Converting the timestamp from the raw data to a format you can use
 % Use the datenum function to convert the "time" variable you extracted
 % into a MATLAB numerical timestamp (Hint: you will need to check the units
 % of time from the netCDF file.)
-
-% -->
+tt=datenum(1900,1,1,0,0,time);
 
 % Checking your work: Use the "datestr" function to check that your
 % converted times match the time range listed in the netCDF file's
 % attributes for time coverage
+datestr(tt(1:5))
 
 % 2b. Calculate the time resolution of the data (i.e. long from one
 % measurement to the next) in minutes. Hint: the "diff" function will be
 % helpful here.
+diff (tt)
 
 %% 3. Make an initial exploration plot to investigate your data
 % Make a plot of temperature vs. time, being sure to show each individual
@@ -39,6 +46,11 @@ filename = 'deployment0001_GP03FLMB.nc';
 % the variability in the data changes over the year?
 % Hint: Use the function "datetick" to make the time show up as
 % human-readable dates rather than the MATLAB timestamp numbers
+
+plot(tt, SST)
+hold on
+datetick(tt)
+
 
 %% 4. Dealing with data variability: smoothing and choosing a variability cutoff
 % 4a. Use the movmean function to calculate a 1-day (24 hour) moving mean
