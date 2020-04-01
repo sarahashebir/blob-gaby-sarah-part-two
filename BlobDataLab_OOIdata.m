@@ -49,7 +49,7 @@ diff (tt)
 
 plot(tt, SST)
 hold on
-datetick(tt)
+datetick('x', 23)
 
 
 %% 4. Dealing with data variability: smoothing and choosing a variability cutoff
@@ -57,19 +57,49 @@ datetick(tt)
 % to smooth the data. Hint: you will need to use the time period between
 % measurements that you calculated in 2b to determine the correct window
 % size to use in the calculation.
+interval= 96
 
-% -->
+smooth_SST= movmean(SST,interval)
+
+plot(tt,smooth_SST, "r-")
+datetick('x', 23)
+
 
 % 4b. Use the movstd function to calculate the 1-day moving standard
 % deviation of the data.
+
+movstd_SST= movstd(smooth_SST,96)
+
+plot(tt,movstd_SST, "r-")
+datetick('x', 23)
+
 
 %% 5. Honing your initial investigation plot
 % Building on the initial plot you made in #3 above, now add:
 %5a. A plot of the 1-day moving mean on the same plot as the original raw data
 
+plot(tt, SST)
+datetick('x', 23)
+
+hold on 
+plot(tt,smooth_SST, "r-")
+datetick('x', 23)
+
+hold off
+
 %5b. A plot of the 1-day moving standard deviation, on a separate plot
 %underneath, but with the same x-axis (hint: you can put two plots in the
 %same figure by using "subplot" and you can specify
+
+figure (4);
+
+subplot (2,1,1)
+plot(tt,movstd_SST, "r-")
+
+subplot (2,1,2)
+plot(tt, SST)
+datetick('x', 23)
+
 
 %% 6. Identifying data to exclude from analysis
 % Based on the plot above, you can see that there are time periods when the
@@ -80,6 +110,14 @@ datetick(tt)
 %1-day moving standard deviation beyond which you will exclude the data
 %from your analysis. Note that you will need to justify this choice in the
 %methods section of your writeup for this lab.
+%cut off at .15 STD
+cut_off=.025
+new_STD= find(movstd_SST<=cut_off)
+
+cut_off_SST= SST(new_STD)
+cut_off_tt= tt(new_STD)
+
+% plot(cut_off_tt,cut_off_SST)
 
 %6b. Find the indices of the data points that you are not excluding based
 %on the cutoff chosen in 6a.
@@ -87,6 +125,20 @@ datetick(tt)
 %6c. Update your figure from #5 to add the non-excluded data as a separate
 %plotted set of points (i.e. in a new color) along with the other data you
 %had already plotted.
+
+%movmean
+plot(tt,smooth_SST, "k-")
+datetick('x', 23)
+
+%hold on
+%std
+% plot(tt,movstd_SST, "r-")
+
+hold on
+%cut_off
+plot(cut_off_tt, cut_off_SST, "r-")
+
+hold off
 
 %% 7. Apply the approach from steps 1-6 above to extract data from all OOI deployments in years 1-6
 % You could do this by writing a for-loop or a function to adapt the code
