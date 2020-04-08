@@ -57,8 +57,10 @@ datetick('x', 23)
 % to smooth the data. Hint: you will need to use the time period between
 % measurements that you calculated in 2b to determine the correct window
 % size to use in the calculation.
-minute_diff= (diff(tt)*1440)
-interval=1440/minute_diff(1,1)
+
+
+diff_tt=diff(tt)
+interval=1/diff_tt(1,1)
 
 smooth_SST= movmean(SST,interval)
 
@@ -126,6 +128,7 @@ cut_off_tt= tt(new_STD)
 %plotted set of points (i.e. in a new color) along with the other data you
 %had already plotted.
 
+figure(5);
 %movmean
 plot(tt,smooth_SST, "k-")
 datetick('x', 23)
@@ -135,8 +138,3 @@ hold on
 plot(cut_off_tt, cut_off_SST, "r-")
 
 hold off
-
-%% 7. Apply the approach from steps 1-6 above to extract data from all OOI deployments in years 1-6
-% You could do this by writing a for-loop or a function to adapt the code
-% you wrote above to something you can apply across all 5 netCDF files
-% (note that deployment 002 is missing)
