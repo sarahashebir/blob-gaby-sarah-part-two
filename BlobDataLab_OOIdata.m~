@@ -1,6 +1,6 @@
 %% 1. Explore and extract data from one year of OOI mooring data
-
-filename = 'deployment0001_GP03FLMB.nc';
+ 
+filename = 'deployment0005_GP03FLMB.nc';
 %1a. Use the function "ncdisp" to display information about the data contained in this file
 ncdisp(filename)
 
@@ -57,21 +57,22 @@ datetick('x', 23)
 % to smooth the data. Hint: you will need to use the time period between
 % measurements that you calculated in 2b to determine the correct window
 % size to use in the calculation.
-interval= 96
+minute_diff= (diff(tt)*1440)
+interval=1440/minute_diff
 
-smooth_SST= movmean(SST,interval)
-
-plot(tt,smooth_SST, "r-")
-datetick('x', 23)
-
-
-% 4b. Use the movstd function to calculate the 1-day moving standard
-% deviation of the data.
-
-movstd_SST= movstd(smooth_SST,96)
-
-plot(tt,movstd_SST, "r-")
-datetick('x', 23)
+% smooth_SST= movmean(SST,interval)
+% 
+% plot(tt,smooth_SST, "r-")
+% datetick('x', 23)
+% 
+% 
+% % 4b. Use the movstd function to calculate the 1-day moving standard
+% % deviation of the data.
+% 
+% movstd_SST= movstd(smooth_SST,96)
+% 
+% plot(tt,movstd_SST, "r-")
+% datetick('x', 23)
 
 
 %% 5. Honing your initial investigation plot
@@ -139,89 +140,3 @@ hold off
 % You could do this by writing a for-loop or a function to adapt the code
 % you wrote above to something you can apply across all 5 netCDF files
 % (note that deployment 002 is missing)
-
-myFolder = 'myFolder';
-filePattern = fullfile (myFolder,'*.nc');
-theFiles = dir(filePattern);
-
-for i=1:length(theFiles)
-baseFileName = theFiles(i).name;
-fullFileName = fullfile(myFolder, baseFileName);
-fprintf(1, 'Now reading %s\n', fullFileName);
-
-ncid=netcdf.open(theFiles(i), 'NC_NOWRITE');
-varname = netcdf.inqVar(ncid,4);
-varid = netcdf.inqVarID(ncid,varname);
-data(i) = netcdf.getVar(ncid,varid);
-
-% lat = ncreadatt(filename(i),'/','lat');
-% lon = ncreadatt(filename(i),'/','lon');
-% 
-% 
-% time = ncread(filename(i),'time');
-% SST = ncread(filename(i),'ctdmo_seawater_temperature');
-% 
-% pressure = ncread(filename(i),'pressure');
-end 
-
-% tt=datenum(1900,1,1,0,0,time);
-% 
-% 
-% datestr(tt(1:5))
-% 
-% 
-% diff (tt)
-% 
-% 
-% plot(tt, SST)
-% hold on
-% datetick('x', 23)
-% 
-% interval= 96
-% 
-% smooth_SST= movmean(SST,interval)
-% 
-% plot(tt,smooth_SST, "r-")
-% datetick('x', 23)
-% 
-% movstd_SST= movstd(smooth_SST,96)
-% 
-% plot(tt,movstd_SST, "r-")
-% datetick('x', 23)
-% 
-% 
-% plot(tt, SST)
-% datetick('x', 23)
-% 
-% hold on 
-% plot(tt,smooth_SST, "r-")
-% datetick('x', 23)
-% 
-% hold off
-% 
-% 
-% figure (4);
-% 
-% subplot (2,1,1)
-% plot(tt,movstd_SST, "r-")
-% 
-% subplot (2,1,2)
-% plot(tt, SST)
-% datetick('x', 23)
-% 
-% cut_off=.025
-% new_STD= find(movstd_SST<=cut_off)
-% 
-% cut_off_SST= SST(new_STD)
-% cut_off_tt= tt(new_STD)
-% 
-% 
-% %movmean
-% plot(tt,smooth_SST, "k-")
-% datetick('x', 23)
-% 
-% %cut_off
-% hold on
-% plot(cut_off_tt, cut_off_SST, "r-")
-% 
-% hold off
