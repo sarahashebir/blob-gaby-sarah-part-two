@@ -37,6 +37,7 @@ theFiles(i).smooth_SST= movmean(theFiles(i).SST,theFiles(i).interval)
 figure(2);
 
 plot(theFiles(i).tt,theFiles(i).smooth_SST, "r-")
+hold on 
 datetick('x', 23)
 
 %%
@@ -44,15 +45,12 @@ datetick('x', 23)
 % deviation of the data.
 
 theFiles(i).movstd_SST= movstd(theFiles(i).smooth_SST,theFiles(i).interval)
-
 plot(theFiles(i).tt,theFiles(i).movstd_SST, "r-")
+hold on 
 datetick('x', 23)
-
-
 %% 5. Honing your initial investigation plot
 % Building on the initial plot you made in #3 above, now add:
 %5a. A plot of the 1-day moving mean on the same plot as the original raw data
-
 figure(3);
 
 plot(theFiles(i).tt, theFiles(i).SST)
