@@ -30,17 +30,21 @@ end
 %latitude and longitude that match the location of the OOI flanking mooring B
 %(the code I wrote later will only work if you name these indices "indlon"
 %and "indlat")
-% --> 
-% -->beebopp
+
+indlat = find(min(woa.lat))
+indlon = find(min(woa.lon))
 
 %Determine the depth index within woa.depth that matches the depth of the
 %temperature sensor on the OOI flanking mooring B (the code I wrote later
 %will only work if you name this index "inddepth")
-% -->
+
+inddepth = find(woa.depth ==
+% a bit confused by what OOI flanking mooring B means
 
 %Now you will use the latitude, longitude, and depth indices from above to extract the
 %annual climatology of temperature at the location where the OOI flanking
 %mooring B data were collected
+
 woa_papa = squeeze(woa.T(indlon,indlat,inddepth,:));
 
 %% 2a. Create an extended version of the World Ocean Atlas 12-month climatology
