@@ -22,58 +22,64 @@ theFiles(i).pressure = ncread(filename,'pressure');
 theFiles(i).tt=datenum(1900,1,1,0,0,theFiles(i).time);
 
 theFiles(i).diff= diff(theFiles(i).tt);
-%%
-figure(1);
-
-plot(theFiles(i).tt, theFiles(i).SST)
-hold on
-datetick('x', 23)
+%% Figure Not needed for final
 
 theFiles(i).diff_tt=diff(theFiles(i).tt)
 theFiles(i).interval=1/theFiles(i).diff_tt(1,1)
 
-theFiles(i).smooth_SST= movmean(theFiles(i).SST,theFiles(i).interval)
-%%
-figure(2);
+tt_merged = ([theFiles(1).tt; theFiles(2).tt; theFiles(3).tt; theFiles(4).tt; theFiles(5).tt])
+SST_merged= ([theFiles(1).SST; theFiles(2).SST; theFiles(3).SST; theFiles(4).SST; theFiles(5).SST])
+plot(tt_merged, SST_merged)
+datetick('x', 23)
+%% Figure Not needed for final
 
-plot(theFiles(i).tt,theFiles(i).smooth_SST, "r-")
-hold on 
+theFiles(i).smooth_SST= movmean(theFiles(i).SST,theFiles(i).interval)
+
+smooth_SST_merged= ([theFiles(1).smooth_SST; theFiles(2).smooth_SST; theFiles(3).smooth_SST; theFiles(4).smooth_SST; theFiles(5).smooth_SST])
+
+plot(tt_merged,smooth_SST_merged, "r-")
 datetick('x', 23)
 
-%%
+%% Figure Not needed for final
 % 4b. Use the movstd function to calculate the 1-day moving standard
 % deviation of the data.
 
 theFiles(i).movstd_SST= movstd(theFiles(i).smooth_SST,theFiles(i).interval)
-plot(theFiles(i).tt,theFiles(i).movstd_SST, "r-")
+
+movstd_SST_merged = ([theFiles(1).movstd_SST; theFiles(2).movstd_SST; theFiles(3).movstd_SST; theFiles(4).movstd_SST; theFiles(5).movstd_SST])
+
+plot(tt_merged,movstd_SST_merged, "r-")
+datetick('x', 23)
+%% Figure Not Needed for Final 
+% A plot of the 1-day moving mean on the same plot as the original raw data
+
+plot(tt_merged, SST_merged)
+datetick('x', 23)
+
 hold on 
+plot(tt_merged,smooth_SST_merged, "r-")
 datetick('x', 23)
-%% 5. Honing your initial investigation plot
-% Building on the initial plot you made in #3 above, now add:
-%5a. A plot of the 1-day moving mean on the same plot as the original raw data
-figure(3);
-
-plot(theFiles(i).tt, theFiles(i).SST)
-datetick('x', 23)
-
-hold on 
-plot(theFiles(i).tt,theFiles(i).smooth_SST, "r-")
-datetick('x', 23)
-
 hold off
-
+%% Figure Needed for Final 
 %5b. A plot of the 1-day moving standard deviation, on a separate plot
 %underneath, but with the same x-axis (hint: you can put two plots in the
 %same figure by using "subplot" and you can specify
 
-figure (4);
-
-subplot (2,1,1)
-plot(theFiles(i).tt,theFiles(i).movstd_SST, "r-")
+figure (1);
 
 subplot (2,1,2)
-plot(theFiles(i).tt, theFiles(i).SST)
+plot(tt_merged,movstd_SST_merged, "r-")
 datetick('x', 23)
+
+subplot (2,1,1)
+plot(tt_merged, SST_merged)
+datetick('x', 23)
+
+hold on 
+plot(tt_merged,smooth_SST_merged, "r-")
+datetick('x', 23)
+hold off
+
 
 
 %% 6. Identifying data to exclude from analysis
@@ -92,23 +98,33 @@ theFiles(i).new_STD= find(theFiles(i).movstd_SST<=theFiles(i).cut_off)
 theFiles(i).cut_off_SST= theFiles(i).SST(theFiles(i).new_STD)
 theFiles(i).cut_off_tt= theFiles(i).tt(theFiles(i).new_STD)
 
-
-%6b. Find the indices of the data points that you are not excluding based
-%on the cutoff chosen in 6a.
-
+cut_tt_merge=([theFiles(1).cut_off_tt; theFiles(2).cut_off_tt; theFiles(3).cut_off_tt; theFiles(4).cut_off_tt; theFiles(5).cut_off_tt])
+cut_SST_merge=([theFiles(1).cut_off_SST; theFiles(2).cut_off_SST; theFiles(3).cut_off_SST; theFiles(4).cut_off_SST; theFiles(5).cut_off_SST])
+%% Needed for final
 %6c. Update your figure from #5 to add the non-excluded data as a separate
 %plotted set of points (i.e. in a new color) along with the other data you
 %had already plotted.
-figure(5);
+
+figure(2);
 %movmean
-plot(theFiles(i).tt,theFiles(i).smooth_SST, "k-")
+plot(tt_merged,smooth_SST_merged, "r-")
 datetick('x', 23)
 
 %cut_off
 hold on
-plot(theFiles(i).cut_off_tt, theFiles(i).cut_off_SST, "r-")
+plot(cut_tt_merge, cut_SST_merge, "r-")
 
 hold off
+subplot (2,1,2)
+plot(tt_merged,movstd_SST_merged, "r-")
+datetick('x', 23)
 
+subplot (2,1,1)
+plot(tt_merged, SST_merged)
+datetick('x', 23)
 
-end 
+hold on 
+plot(tt_merged,smooth_SST_merged, "r-")
+datetick('x', 23)
+hold off
+end

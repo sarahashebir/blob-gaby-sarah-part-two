@@ -103,6 +103,11 @@ subplot (2,1,2)
 plot(tt, SST)
 datetick('x', 23)
 
+hold on 
+plot(tt,smooth_SST, "r-")
+datetick('x', 23)
+
+
 
 %% 6. Identifying data to exclude from analysis
 % Based on the plot above, you can see that there are time periods when the
