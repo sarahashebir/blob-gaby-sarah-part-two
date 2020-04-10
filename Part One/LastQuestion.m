@@ -44,7 +44,7 @@ datetick('x', 23)
 % 4b. Use the movstd function to calculate the 1-day moving standard
 % deviation of the data.
 
-theFiles(i).movstd_SST= movstd(theFiles(i).smooth_SST,theFiles(i).interval)
+theFiles(i).movstd_SST= movstd(theFiles(i).SST,theFiles(i).interval)
 
 movstd_SST_merged = ([theFiles(1).movstd_SST; theFiles(2).movstd_SST; theFiles(3).movstd_SST; theFiles(4).movstd_SST; theFiles(5).movstd_SST])
 
@@ -108,7 +108,7 @@ cut_SST_merge=([theFiles(1).cut_off_SST; theFiles(2).cut_off_SST; theFiles(3).cu
 figure(2);
 
 subplot (2,1,2)
-plot(tt_merged,movstd_SST_merged, "r-")
+plot(tt_merged,movstd_SST_merged, "b-")
 datetick('x', 23)
 
 subplot (2,1,1)
@@ -116,11 +116,11 @@ plot(tt_merged, SST_merged, "k-")
 datetick('x', 23)
 
 hold on 
-plot(tt_merged,smooth_SST_merged, "r-")
+plot(tt_merged,smooth_SST_merged, "m-")
 datetick('x', 23)
 
 hold on
-plot(cut_tt_merge, cut_SST_merge)
+plot(cut_tt_merge, cut_SST_merge, "c")
 
 hold off
 end

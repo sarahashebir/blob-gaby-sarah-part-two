@@ -71,7 +71,7 @@ datetick('x', 23)
 % 4b. Use the movstd function to calculate the 1-day moving standard
 % deviation of the data.
 
-movstd_SST= movstd(smooth_SST,96)
+movstd_SST= movstd(SST,interval)
 
 plot(tt,movstd_SST, "r-")
 datetick('x', 23)
@@ -96,10 +96,10 @@ hold off
 
 figure (4);
 
-subplot (2,1,1)
+subplot (2,1,2)
 plot(tt,movstd_SST, "r-")
 
-subplot (2,1,2)
+subplot (2,1,1)
 plot(tt, SST)
 datetick('x', 23)
 
@@ -134,12 +134,18 @@ cut_off_tt= tt(new_STD)
 %had already plotted.
 
 figure(5);
-%movmean
-plot(tt,smooth_SST, "k-")
+subplot (2,1,2)
+plot(tt,movstd_SST, "r-")
+
+subplot (2,1,1)
+plot(tt, SST, "b-")
 datetick('x', 23)
 
-%cut_off
-hold on
-plot(cut_off_tt, cut_off_SST, "r-")
+hold on 
+plot(tt,smooth_SST, "m-")
+datetick('x', 23)
+
+hold on 
+plot(cut_off_tt, cut_off_SST, "c-")
 
 hold off
