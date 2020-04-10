@@ -10,6 +10,7 @@
 % and subset to only include the North Pacific region
 
 for i = 1:12
+
     if i < 10
         filename = ['woa13_decav_t0' num2str(i) '_01_NEPac.nc'];
     else
@@ -24,7 +25,6 @@ for i = 1:12
         woa.T(:,:,:,i) = ncread(filename,'t_an');
     end
 end
-
 %% 1. Extract the World Ocean Atlas (WOA) climatological mean data at Ocean Station Papa
 %Use the "min" function to find the indices within the woa data for the
 %latitude and longitude that match the location of the OOI flanking mooring B
@@ -38,8 +38,7 @@ indlon = find(min(woa.lon))
 %temperature sensor on the OOI flanking mooring B (the code I wrote later
 %will only work if you name this index "inddepth")
 
-inddepth = find(woa.depth ==
-% a bit confused by what OOI flanking mooring B means
+inddepth = find(woa.depth == 30)
 
 %Now you will use the latitude, longitude, and depth indices from above to extract the
 %annual climatology of temperature at the location where the OOI flanking
@@ -60,7 +59,11 @@ woa_time = [datenum(2013,1:12,15) datenum(2014,1:12,15)...
 woa_papa_rep = [repmat(woa_papa,7,1); woa_papa(1:3)];
 
 %% 2b. Plot the WOA temperature time series along with the OOI temperature time series from Part 1
-% -->
+%confused
+plot(tt_merged, SST_merged, "k-")
+hold on 
+plot (woa_time,  woa_papa_rep)
+datetick('x', 23)
 
 %% 3a. Interpolate WOA data onto the times where the OOI data were collected at Ocean Station Papa
 % Use the "interp1" function to interplate the World Ocean Atlas

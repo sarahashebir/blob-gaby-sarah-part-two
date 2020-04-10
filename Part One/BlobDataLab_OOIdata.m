@@ -8,7 +8,7 @@ ncdisp(filename)
 %ncreadatt (filename)
 lat = ncreadatt(filename,'/','lat');
 lon = ncreadatt(filename,'/','lon');
-
+depth= ncread(filename, 'depth');
 %1c. Use the function "ncread" to extract the variables "time" and
 %"ctdmo_seawater_temperature"
 time = ncread(filename,'time');
