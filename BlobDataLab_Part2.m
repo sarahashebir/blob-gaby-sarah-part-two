@@ -70,7 +70,10 @@ datetick('x', 23)
 % temperature data over the extended timeline (woa_papa_rep) from the
 % original extended monthly data (woa_time) onto the times when the OOI
 % data were collected (from your Part 1 analysis)
-% -->
+
+interp_woa = interp1(woa_time, woa_papa_rep, tt_merged);
+
+plot(tt_merged, interp_woa)
 
 %% 3b. Calculate the temperature anomaly as the difference between the OOI mooring
 % observations (using the smoothed data during good intervals) and the
