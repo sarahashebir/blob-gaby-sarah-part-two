@@ -31,8 +31,9 @@ end
 %(the code I wrote later will only work if you name these indices "indlon"
 %and "indlat")
 
-indlat = find(min(woa.lat))
-indlon = find(min(woa.lon))
+[indlat, indloc] = (min(abs(woa.lat-lat))) %50.377
+%[BATS_lat,BATS_latloc] = min(abs(latgrid-31.6));
+[indlon, indlonloc] = min(abs(lon - woa.lon ))
 
 %Determine the depth index within woa.depth that matches the depth of the
 %temperature sensor on the OOI flanking mooring B (the code I wrote later
@@ -44,7 +45,7 @@ inddepth = find(woa.depth == 30)
 %annual climatology of temperature at the location where the OOI flanking
 %mooring B data were collected
 
-woa_papa = squeeze(woa.T(indlon,indlat,inddepth,:));
+woa_papa = squeeze(woa.T(indlonloc,indlatloc,inddepth,:));
 
 %% 2a. Create an extended version of the World Ocean Atlas 12-month climatology
 % repeated over the entire timeline of which the OOI mooring data were collected
